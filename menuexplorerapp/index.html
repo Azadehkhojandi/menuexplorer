@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <title>Express HTML</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <script src="/assets/js/imagepreview.js"></script>
+    <script src="/assets/js/analyzeimage.js"></script>
+</head>
+
+<body>
+    <div style="margin:100px;">
+        <nav class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <a class="navbar-brand" href="/">Menu explorer</a>
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+    <div class="container">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>Upload Image</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                            Browse…
+                            <input type="file" id="imgInp">
+                        </span>
+                    </span>
+                    <input type="text" class="form-control" readonly>
+                </div>
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div id="result" >
+
+            <div class="col-sm-12 col-md-6">
+                    <div id='selected-line-result'></div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                    <div id="carousel" class="carousel slide hidden" data-ride="carousel">
+
+                            <ol class="carousel-indicators">
+                                <!-- <li data-target="#carousel" data-slide-to="0" class="active"></li> -->
+            
+                            </ol>
+            
+            
+                            <div class="carousel-inner">
+            
+                                <div class="item active">
+                                    <img src="/assets/img/preview.png" alt="Slide 1" />
+                                </div>
+            
+                            </div>
+                            <a href="#carousel" class="left carousel-control" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a href="#carousel" class="right carousel-control" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div>
+            </div>
+
+           
+
+            <div class="col-sm-12">
+                <div id="lines" />
+            </div>
+        </div>
+
+</body>
+
+</html>

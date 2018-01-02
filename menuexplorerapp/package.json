@@ -1,0 +1,19 @@
+{
+  "name": "menuexplorerapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon node ./serverside/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+
+  "devDependencies": {
+    "nodemon": "^1.14.7"
+  }
+}
