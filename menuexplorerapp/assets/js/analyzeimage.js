@@ -7,13 +7,15 @@ $(document).ready(function () {
             .then(res => res.blob())
             .then(blob => {
 
+                reset();
+
                 ocr(blob, function (data) {
                     if (data && data.result) {
                         data = data.result;
                         var context = $("#canvas")[0].getContext('2d');
                         lines = [];
                         for (var i = 0; i < data.regions.length; i++) {
-                           
+
                             for (var l = 0; l < data.regions[i].lines.length; l++) {
                                 var line = joinObj(data.regions[i].lines[l].words, "text");
                                 var linebox = data.regions[i].lines[l].boundingBox.split(",");
@@ -25,13 +27,13 @@ $(document).ready(function () {
 
                             drawbox(context, lines[index].box, "rgba(0, 0, 200, 0.5)");
                             if (data.language === 'en') {
-                                $("#lines").append("<p>" + lines[index].line + "</p>");
+                                $("#lines").append("<p> <span class='originaltext'>" + lines[index].line + "</span></p>");
                             }
                             else {
                                 translate(lines[index], "line", function (originaltext, result, line) {
                                     if (result && result.translatedtext) {
                                         line.translatedtext = result.translatedtext;
-                                        $("#lines").append("<p>" + "<b>" + data.language + ":</b> " + originaltext + "<b>en:</b> " + result.translatedtext + "</p>");
+                                        $("#lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext'>" + originaltext + "</span> <b>en:</b> " + result.translatedtext + "</p>");
                                     }
                                 });
                             }
@@ -46,12 +48,13 @@ $(document).ready(function () {
         if (rect) {
             $("#selected-line-result").html('<p>' + rect.line + (rect.translatedtext !== (null || undefined) ? ' <b>en:</b> ' + rect.translatedtext : '') + '</p>');
             imagesearch(rect.line, function (data) {
-                if (data && data.result) {
+                if (data && data.result && data.result.value && data.result.value.length > 0) {
+
+                    $('.carousel-inner').html('');
+                    $('.carousel-indicators').html('');
+
                     data = data.result;
-                    if(data.value.length>0)
-                    {
-                       $('.carousel-inner').html('');
-                    }
+
                     for (let index = 0; index < data.value.length; index++) {
                         var item = '<div class="item"><img src="{src}"/></div>'.replace('{src}', data.value[index].thumbnailUrl);
                         var li = ' <li data-target="#carousel" data-slide-to="{index}" ></li>'.replace('{index}', index);
@@ -63,16 +66,52 @@ $(document).ready(function () {
                     $('.carousel-indicators > li').first().addClass('active');
                     $("#carousel").carousel();
                 }
-                else
-                {
-                    var previewitem='<div class="item active"><img src="/assets/img/preview.png" alt="Slide 1" /></div>';
-                    $(previewitem).appendTo('.carousel-inner');
+                else {
+                    $('#carousel').addClass('hidden');
+                    var previewitem = '<div class="item active"><img src="/assets/img/preview.png" alt="Slide 1" /></div>';
+                    $('.carousel-inner').html(previewitem);
+                    var previewitemindex = '<li data-target="#carousel" data-slide-to="0" class="active"></li>';
+                    $('.carousel-indicators').html(previewitemindex);
                 }
             });
         } else {
             console.log('no collision');
         }
     });
+
+
+
+    function reset() {
+        $("#lines").html('');
+        $("#selected-line-result").html('');
+        $('#carousel').addClass('hidden');
+        var previewitem = '<div class="item active"><img src="/assets/img/preview.png" alt="Slide 1" /></div>';
+        $('.carousel-inner').html(previewitem);
+        var previewitemindex = '<li data-target="#carousel" data-slide-to="0" class="active"></li>';
+        $('.carousel-indicators').html(previewitemindex);
+    }
+
+
+    $('#lines').on('click', '.originaltext', function (e) {
+
+        var q =encodeURIComponent( this.textContent.replace(/ +(?= )/g,' ').replace(/\s+/g,"+"));
+        var bingserach = 'https://www.bing.com/images/search?q={q}&FORM=HDRSC2'.replace('{q}', q);
+        var googleserach = 'https://www.google.com.au/search?q={q}&tbm=isch'.replace('{q}', q);
+
+        var wingoogle = window.open(googleserach, '_blank');
+        var winbing = window.open(bingserach, '_blank');
+
+
+
+        if (winbing) {
+            winbing.focus();
+        } else if (!wingoogle || !winbing) {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+
+    });
+
 });
 
 function joinObj(a, attr) {
@@ -87,7 +126,6 @@ function drawbox(context, box, color) {
     context.beginPath();
     context.rect(box[0], box[1], box[2], box[3]);
     context.fillStyle = color;
-
     context.closePath();
     context.fill();
 }
@@ -103,7 +141,6 @@ function collides(x, y) {
         if (
             x >= left && x <= right && y >= top && y <= bottom
         ) {
-
             lineCollision = lines[i];
             return lineCollision;
         }
@@ -178,13 +215,10 @@ function imagesearch(q, callback) {
         }
 
     });
-
-
-
-
-
-
 }
+
+
+
 
 
 

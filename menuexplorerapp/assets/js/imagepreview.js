@@ -23,41 +23,27 @@ $(document).ready(function () {
 
 
     function readURL(input) {
-       let  max_width=$(".form-group").width()
-       
+        let max_width = $(".form-group").width()
+
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
                 var context = $("#canvas")[0].getContext('2d');
                 var image = new Image();
                 image.onload = function () {
-
-                      // if (image.width > max_width) {
-                           image.height = (max_width / image.width) * image.height;
-                           image.width = max_width;
-
-                       //}
-
-                       // Setup a canvas with the same dimensions as the video.
-                       $("#canvas")[0].width = image.width;
-                       $("#canvas")[0].height = image.height;
-
-                    //Make a copy of the current frame in the video on the canvas.
+                    image.height = (max_width / image.width) * image.height;
+                    image.width = max_width;
+                    $("#canvas")[0].width = image.width;
+                    $("#canvas")[0].height = image.height;
                     context.drawImage(image, 0, 0, image.width, image.height);
-                    
-                      $("#canvas").trigger( "imageuploaded" );
-
-
+                    $("#canvas").trigger("imageuploaded");
                 };
                 var snap = e.target.result;
                 image.src = snap;
             };
-
             reader.readAsDataURL(input.files[0]);
-
         }
     }
-
 
     $("#imgInp").change(function () {
         readURL(this);
