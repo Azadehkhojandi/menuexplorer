@@ -1,0 +1,12 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+      "BingImageSearch_Key": "yourkey",
+      "ComputerVision_Key": "yourkey",
+      "TextTranslator_Key": "yourkey"
+    },
+    "Host": {
+      "LocalHttpPort": 7071,
+      "CORS": "*"
+    }
+  }
