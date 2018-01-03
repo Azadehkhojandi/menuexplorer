@@ -11,9 +11,6 @@ app.get('/', function (req, res) {
   //__dirname : It will resolve to your project folder.
 });
 
-app.get('/about', function (req, res) {
-  res.sendFile(path.join(__dirname + './../about.html'));
-});
 
 app.listen(3000);
 
