@@ -6,8 +6,12 @@ Is an application to allow you to explore the food menu and translate it for you
 
 This project has two parts. 
 
-## 1- menuexplorerfuncapp
+ 1- menuexplorerfuncapp
+ 2- menuexplorerapp
 
+You can easily run and test the application locally. The application is also hosted on Azure https://themenuexplorer.azurewebsites.net/ 
+
+## 1- menuexplorerfuncapp
 contains of azure functions (serverless) to work with microsoft cognitive services.
 
 Computer vision - OCR: detecting handwritten or printed text in an image and then converting them into machine-encoded text - more info https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/
@@ -36,5 +40,19 @@ you need node js installed on your computer to get the client app running.
 run npm install to install dependency packages - It uses express to host the application and for the client side it's basic javascript/jquery 
 
 run npm start to run the application 
+
+### How to deploy the application to Azure
+
+Since the application has two seperate projects, you may wonder what's the easiest way to deploy it azure. The easiest way is before setting the deployment options first we need to set the 'PROJECT' property in the app settings
+
+Set value of 'PROJECT' to **menuexplorerfuncapp/menuexplorerfuncapp.csproj** for your azure function
+
+Set value of 'PROJECT' to **menuexplorerapp** for your node js web app
+
+
+more info:
+https://www.hanselman.com/blog/DeployingTWOWebsitesToWindowsAzureFromOneGitRepository.aspx
+https://github.com/projectkudu/kudu/wiki/Customizing-deployments
+
 
 
