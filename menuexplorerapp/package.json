@@ -2,7 +2,7 @@
   "name": "menuexplorerapp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./serverside/server.js",
   "scripts": {
     "start": "node ./serverside/server.js",
     "debug": "nodemon node ./serverside/server.js"

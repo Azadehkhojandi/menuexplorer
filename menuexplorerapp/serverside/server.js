@@ -25,7 +25,7 @@ app.get('/config', function (req, res) {
 
 
 
-
-app.listen(3000);
-
-console.log("Running at Port 3000");
+var port = process.env.Port || 3000;
+app.listen(port, function () {
+  console.log('app listening on port ' + port + '!');
+});
