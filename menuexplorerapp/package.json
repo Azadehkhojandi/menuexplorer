@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon node ./serverside/server.js"
+    "start": "node ./serverside/server.js",
+    "debug": "nodemon node ./serverside/server.js"
   },
   "keywords": [],
   "author": "",
