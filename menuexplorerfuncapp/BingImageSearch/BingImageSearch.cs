@@ -13,6 +13,24 @@ namespace menuexplorerfuncapp
 {
     public static class BingImageSearch
     {
+        private static async Task<BingImageSearchResult> Search(string q,string count)
+        {
+            var key = ConfigurationManager.AppSettings["BingImageSearch_Key"];
+
+            var qparams = $"q=\"{q}\"&count={count}&imageType=Photo";
+            using (var client = new HttpClient())
+            {
+                var path = $"https://api.cognitive.microsoft.com/bing/v7.0/images/search?{qparams}";
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
+                using (var response = await client.GetAsync(path))
+                {
+                    var contentString = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<BingImageSearchResult>(contentString);
+                    return result;
+
+                }
+            }
+        }
         [FunctionName("BingImageSearch")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequestMessage req,
@@ -21,8 +39,6 @@ namespace menuexplorerfuncapp
             try
             {
                
-                var key = ConfigurationManager.AppSettings["BingImageSearch_Key"];
-
                 var q = req.GetQueryNameValuePairs()
                     .FirstOrDefault(x => string.Compare(x.Key, "q", true) == 0)
                     .Value;
@@ -37,22 +53,16 @@ namespace menuexplorerfuncapp
                 q = q ?? data?.q;
                 count = count ?? data?.count;
 
-                var qparams = $"q=\"{q}\"&count={count}&imageType=Photo";
+                //var qparams = $"q=\"{q}\"&count={count}&imageType=Photo";
                
                 log.Info($"q:{q}");
-                using (var client = new HttpClient())
-                {
-                    var path = $"https://api.cognitive.microsoft.com/bing/v7.0/images/search?{qparams}"  ;
-                    log.Info($"path:{path}");
-                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
-                    using (var response = await client.GetAsync(path))
-                    {
-                        string contentString = await response.Content.ReadAsStringAsync();
-                        dynamic jsonresult = JsonConvert.DeserializeObject<dynamic>(contentString);
-                        return req.CreateResponse(HttpStatusCode.OK, new {   q=q , count = count , result = jsonresult });
+                var result = await Search( q, count);
 
-                    }
+                if (result?.value != null && !result.value.Any())
+                {
+                    result = await Search(q.Replace(" ",""), count);
                 }
+                return req.CreateResponse(HttpStatusCode.OK, new {q, count, result });
 
             }
             catch (Exception ex)

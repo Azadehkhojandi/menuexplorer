@@ -41,6 +41,7 @@ $(document).ready(function () {
                         if (data && data.result) {
                             $('.menu-in-plain-text').removeClass('hidden');
                             data = data.result;
+
                             var context = $("#canvas")[0].getContext('2d');
                             lines = [];
                             for (var i = 0; i < data.regions.length; i++) {
@@ -56,13 +57,13 @@ $(document).ready(function () {
 
                                 drawbox(context, lines[index].box, "rgba(0, 0, 200, 0.5)");
                                 if (data.language === 'en') {
-                                    $(".lines").append("<p> <span class='originaltext'>" + lines[index].line + "</span></p>");
+                                    $(".lines").append("<p> <span class='originaltext' data-language='en'>" + lines[index].line + "</span></p>");
                                 }
                                 else {
                                     translate(lines[index], "line", function (originaltext, result, line) {
                                         if (result && result.translatedtext) {
                                             line.translatedtext = result.translatedtext;
-                                            $(".lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext'>" + originaltext + "</span> <b>en:</b> " + result.translatedtext + "</p>");
+                                            $(".lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext' data-language='" + data.language + "'>" + originaltext + "</span> <b>en:</b>  <span class='originaltext' data-language='en'> "+ result.translatedtext + "</span> </p>");
                                         }
                                     });
                                 }
@@ -105,7 +106,7 @@ $(document).ready(function () {
     });
 
     function reset() {
-       
+
         $('.menu-in-plain-text').addClass('hidden');
         $('.selected-line').addClass('hidden');
         $(".selected-line-result").html('');
