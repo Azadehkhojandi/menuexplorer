@@ -39,6 +39,7 @@ $(document).ready(function () {
                     }
                     ocr(blob, function (data) {
                         if (data && data.result) {
+                            $('.menu-in-plain-text').removeClass('hidden');
                             data = data.result;
                             var context = $("#canvas")[0].getContext('2d');
                             lines = [];
@@ -55,13 +56,13 @@ $(document).ready(function () {
 
                                 drawbox(context, lines[index].box, "rgba(0, 0, 200, 0.5)");
                                 if (data.language === 'en') {
-                                    $("#lines").append("<p> <span class='originaltext'>" + lines[index].line + "</span></p>");
+                                    $(".lines").append("<p> <span class='originaltext'>" + lines[index].line + "</span></p>");
                                 }
                                 else {
                                     translate(lines[index], "line", function (originaltext, result, line) {
                                         if (result && result.translatedtext) {
                                             line.translatedtext = result.translatedtext;
-                                            $("#lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext'>" + originaltext + "</span> <b>en:</b> " + result.translatedtext + "</p>");
+                                            $(".lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext'>" + originaltext + "</span> <b>en:</b> " + result.translatedtext + "</p>");
                                         }
                                     });
                                 }
@@ -77,34 +78,25 @@ $(document).ready(function () {
     });
 
     $("#canvas").on('click', function (e) {
+        $(".selected-line").addClass('hidden');
         var rect = collides(e.offsetX, e.offsetY);
         if (rect) {
-            $("#selected-line-result").html('<p>' + rect.line + (rect.translatedtext !== (null || undefined) ? ' <b>en:</b> ' + rect.translatedtext : '') + '</p>');
+            $(".selected-line").removeClass('hidden');
+            $(".selected-line-result").html('<h2>' + rect.line + (rect.translatedtext !== (null || undefined) ? ' <b>en:</b> ' + rect.translatedtext : '') + '</h2>');
+            $(".selected-line-photos").html('');
             imagesearch(rect.line, function (data) {
                 if (data && data.result && data.result.value && data.result.value.length > 0) {
-
-                    $('.carousel-inner').html('');
-                    $('.carousel-indicators').html('');
-
+                    $('.selected-line-photos').removeClass('hidden');
                     data = data.result;
-
+                    var colwidth = 12 / data.value.length;
                     for (let index = 0; index < data.value.length; index++) {
-                        var item = '<div class="item"><img src="{src}"/></div>'.replace('{src}', data.value[index].thumbnailUrl);
-                        var li = ' <li data-target="#carousel" data-slide-to="{index}" ></li>'.replace('{index}', index);
-                        $(item).appendTo('.carousel-inner');
-                        $(li).appendTo('.carousel-indicators');
+                        var item = '<div class="col-sm-12 col-md-{colwidth}"><img src="{src}" class="img-rounded" alt="{alt}"></div>'.replace('{colwidth}', colwidth).replace('{src}', data.value[index].thumbnailUrl).replace('{alt}', data.value[index].displayText);
+                        $(item).appendTo('.selected-line-photos');
                     }
-                    $('#carousel').removeClass('hidden');
-                    $('.item').first().addClass('active');
-                    $('.carousel-indicators > li').first().addClass('active');
-                    $("#carousel").carousel();
                 }
                 else {
-                    $('#carousel').addClass('hidden');
-                    var previewitem = '<div class="item active"><img src="/assets/img/preview.png" alt="Slide 1" /></div>';
-                    $('.carousel-inner').html(previewitem);
-                    var previewitemindex = '<li data-target="#carousel" data-slide-to="0" class="active"></li>';
-                    $('.carousel-indicators').html(previewitemindex);
+                    $('.selected-line-photos').addClass('hidden');
+
                 }
             });
         } else {
@@ -113,16 +105,16 @@ $(document).ready(function () {
     });
 
     function reset() {
-        $("#lines").html('');
-        $("#selected-line-result").html('');
-        $('#carousel').addClass('hidden');
-        var previewitem = '<div class="item active"><img src="/assets/img/preview.png" alt="Slide 1" /></div>';
-        $('.carousel-inner').html(previewitem);
-        var previewitemindex = '<li data-target="#carousel" data-slide-to="0" class="active"></li>';
-        $('.carousel-indicators').html(previewitemindex);
+       
+        $('.menu-in-plain-text').addClass('hidden');
+        $('.selected-line').addClass('hidden');
+        $(".selected-line-result").html('');
+        $(".selected-line-photos").html('');
+        $(".lines").html('');
+
     }
 
-    $('#lines').on('click', '.originaltext', function (e) {
+    $('.lines').on('click', '.originaltext', function (e) {
 
         var q = encodeURIComponent(this.textContent.replace(/ +(?= )/g, ' ').replace(/\s+/g, "+"));
         var bingserach = 'https://www.bing.com/images/search?q={q}&FORM=HDRSC2'.replace('{q}', q);
@@ -223,7 +215,7 @@ function translate(obj, property, callback) {
         'text': obj[property],
         'to': 'en'
     };
-   
+
 
     $.ajax({
         url: api_url,
@@ -254,7 +246,7 @@ function imagesearch(q, callback) {
         data:
             {
                 'q': q,
-                'count': 5
+                'count': 6
             },
         success: function (data, status) {
             callback(data);

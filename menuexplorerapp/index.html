@@ -2,62 +2,61 @@
 
 <head>
     <title>Menu explorer</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/assets/css/style.css" />
-    <script src="/assets/js/imagepreview.js"></script>
-    <script src="/assets/js/analyzeimage.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js'></script>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css'>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js'></script>
+    <link rel='stylesheet' href='/assets/css/style.css' />
+    <script src='/assets/js/imagepreview.js'></script>
+    <script src='/assets/js/analyzeimage.js'></script>
 </head>
 
 <body>
-    <div style="margin:100px;">
-        <nav class="navbar navbar-inverse navbar-static-top">
-            <div class="container">
-                <a class="navbar-brand" href="/">Menu explorer</a>
+    <div style='margin:100px;'>
+        <nav class='navbar navbar-inverse navbar-static-top'>
+            <div class='container'>
+                <a class='navbar-brand' href='/'>Menu explorer</a>
             </div>
         </nav>
 
     </div>
-    <div class="container">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label>Upload Image</label>
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <span class="btn btn-default btn-file">
-                            Browse…
-                            <input type="file" id="imgInp">
+    <div class='container'>
+        <div class='row'>
+            <div class='col-sm-12'>
+                <div class='form-group'>
+                    <label>Upload Image</label>
+                    <div class='input-group'>
+                        <span class='input-group-btn'>
+                            <span class='btn btn-default btn-file'>
+                                Browse…
+                                <input type='file' id='imgInp'>
+                            </span>
                         </span>
-                    </span>
-                    <input type="text" class="form-control" readonly>
+                        <input type='text' class='form-control' readonly>
+                    </div>
+                    <canvas id='canvas'></canvas>
                 </div>
-                <canvas id="canvas"></canvas>
+
+            </div>
+
+        </div>
+        <div class='selected-line well well-lg hidden'>
+            <div class='row selected-line-result'>
+
+
+
+            </div>
+            <div class='row selected-line-photos'>
+
+
+
             </div>
         </div>
-        <div id="result" >
-
-            <div class="col-sm-12 col-md-8">
-                    <div id='selected-line-result'></div>
-            </div>
-            <div class="col-sm-12 col-md-4">
-                    <div id="carousel" class="carousel slide hidden" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                            </ol>
-                            <div class="carousel-inner">
-                                <div class="item active"><img src="/assets/img/preview.png" alt="Slide 1" /></div>
-                            </div>
-                            <a href="#carousel" class="left carousel-control" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                            </a>
-                            <a href="#carousel" class="right carousel-control" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right"></span>
-                            </a>
-                        </div>
-            </div>
-            <div class="col-sm-12">
-                <div id="lines" />
+        <div class='menu-in-plain-text well well-lg hidden'>
+            <div class='row'>
+                <div class='col-sm-12'>
+                    <div class='lines' />
+                </div>
             </div>
         </div>
 </body>

@@ -18,11 +18,11 @@
     display: block;
 }
 
- .carousel-inner>.item>img, .carousel-inner>.item>a>img
- {
-    height: 200px;
- }
+div.selected-line-photos img {
+    height: auto;
+    width: 100%;
+}
 
- .originaltext {
-     cursor: pointer;
-    }
+.originaltext {
+    cursor: pointer;
+}
