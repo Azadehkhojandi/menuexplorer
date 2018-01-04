@@ -3,7 +3,7 @@ var express = require("express");
 var app = express();
 var path = require("path");
 
-app.use('/assets', express.static('assets'));
+app.use('/assets', express.static(__dirname +'./../assets'));
 
 app.get('/', function (req, res) {
   let tmp = path.join(__dirname + './../index.html');
