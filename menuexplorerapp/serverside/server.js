@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require("express");
 var app = express();
 var path = require("path");
@@ -10,6 +11,19 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + './../index.html'));
   //__dirname : It will resolve to your project folder.
 });
+
+app.get('/config', function (req, res) {
+  res.json(
+    {
+      "services": {
+        "OcrUrl": process.env.OcrUrl,
+        "BingImageSearchUrl": process.env.BingImageSearchUrl,
+        "TranslateUrl": process.env.TranslateUrl
+      }
+    });
+});
+
+
 
 
 app.listen(3000);

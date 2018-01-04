@@ -1,4 +1,27 @@
 var lines = [];
+var config = {};
+
+function loadconfig(callback) {
+
+    let api_url = '/config';
+    $.ajax({
+        url: api_url,
+        success: function (data, status) {
+            config = data;
+            if (callback) {
+                callback(data);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (callback) {
+                callback();
+            }
+        }
+
+    });
+}
+
+
 $(document).ready(function () {
 
     $("#canvas").on("imageuploaded", function (event) {
@@ -9,37 +32,47 @@ $(document).ready(function () {
 
                 reset();
 
-                ocr(blob, function (data) {
-                    if (data && data.result) {
-                        data = data.result;
-                        var context = $("#canvas")[0].getContext('2d');
-                        lines = [];
-                        for (var i = 0; i < data.regions.length; i++) {
-
-                            for (var l = 0; l < data.regions[i].lines.length; l++) {
-                                var line = joinObj(data.regions[i].lines[l].words, "text");
-                                var linebox = data.regions[i].lines[l].boundingBox.split(",");
-                                lines.push({ line: line, box: linebox });
-                            }
-                        }
-
-                        for (let index = 0; index < lines.length; index++) {
-
-                            drawbox(context, lines[index].box, "rgba(0, 0, 200, 0.5)");
-                            if (data.language === 'en') {
-                                $("#lines").append("<p> <span class='originaltext'>" + lines[index].line + "</span></p>");
-                            }
-                            else {
-                                translate(lines[index], "line", function (originaltext, result, line) {
-                                    if (result && result.translatedtext) {
-                                        line.translatedtext = result.translatedtext;
-                                        $("#lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext'>" + originaltext + "</span> <b>en:</b> " + result.translatedtext + "</p>");
-                                    }
-                                });
-                            }
-                        }
+                loadconfig(function (data) {
+                    if (!data) {
+                        console.error("cannot find the config for the location of cognitive services. If you run the application locally make sure .env file is not missing ");
+                        return;
                     }
-                });
+                    ocr(blob, function (data) {
+                        if (data && data.result) {
+                            data = data.result;
+                            var context = $("#canvas")[0].getContext('2d');
+                            lines = [];
+                            for (var i = 0; i < data.regions.length; i++) {
+
+                                for (var l = 0; l < data.regions[i].lines.length; l++) {
+                                    var line = joinObj(data.regions[i].lines[l].words, "text");
+                                    var linebox = data.regions[i].lines[l].boundingBox.split(",");
+                                    lines.push({ line: line, box: linebox });
+                                }
+                            }
+
+                            for (let index = 0; index < lines.length; index++) {
+
+                                drawbox(context, lines[index].box, "rgba(0, 0, 200, 0.5)");
+                                if (data.language === 'en') {
+                                    $("#lines").append("<p> <span class='originaltext'>" + lines[index].line + "</span></p>");
+                                }
+                                else {
+                                    translate(lines[index], "line", function (originaltext, result, line) {
+                                        if (result && result.translatedtext) {
+                                            line.translatedtext = result.translatedtext;
+                                            $("#lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext'>" + originaltext + "</span> <b>en:</b> " + result.translatedtext + "</p>");
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+
+
+                }
+
+                );
             });
     });
 
@@ -79,8 +112,6 @@ $(document).ready(function () {
         }
     });
 
-
-
     function reset() {
         $("#lines").html('');
         $("#selected-line-result").html('');
@@ -91,10 +122,9 @@ $(document).ready(function () {
         $('.carousel-indicators').html(previewitemindex);
     }
 
-
     $('#lines').on('click', '.originaltext', function (e) {
 
-        var q =encodeURIComponent( this.textContent.replace(/ +(?= )/g,' ').replace(/\s+/g,"+"));
+        var q = encodeURIComponent(this.textContent.replace(/ +(?= )/g, ' ').replace(/\s+/g, "+"));
         var bingserach = 'https://www.bing.com/images/search?q={q}&FORM=HDRSC2'.replace('{q}', q);
         var googleserach = 'https://www.google.com.au/search?q={q}&tbm=isch'.replace('{q}', q);
 
@@ -150,7 +180,13 @@ function collides(x, y) {
 
 function ocr(blob, callback) {
 
-    let api_url = 'http://localhost:7071/api/OCR';
+    if (!config || !config.services || !config.services.OcrUrl) {
+        console.error("config is missing - cannot find path to Ocr service");
+        return;
+    }
+
+    let api_url = config.services.OcrUrl;
+
     let headers = {
         'Content-Type': 'application/octet-stream'
     };
@@ -176,11 +212,18 @@ function ocr(blob, callback) {
 
 function translate(obj, property, callback) {
 
+    if (!config || !config.services || !config.services.TranslateUrl) {
+        console.error("config is missing - cannot find path to Translate service");
+        return;
+    }
+
+    let api_url = config.services.TranslateUrl;
+
     var translateobj = {
         'text': obj[property],
         'to': 'en'
     };
-    let api_url = 'http://localhost:7071/api/Translate';
+   
 
     $.ajax({
         url: api_url,
@@ -199,7 +242,13 @@ function translate(obj, property, callback) {
 
 function imagesearch(q, callback) {
 
-    let api_url = 'http://localhost:7071/api/BingImageSearch';
+    if (!config || !config.services || !config.services.BingImageSearchUrl) {
+        console.error("config is missing - cannot find path to Bing image search service");
+        return;
+    }
+
+    let api_url = config.services.BingImageSearchUrl;
+
     $.ajax({
         url: api_url,
         data:
