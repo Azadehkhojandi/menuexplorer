@@ -12,7 +12,8 @@ This project has two parts.
 You can easily run and test the application locally. The application is also hosted on Azure https://themenuexplorer.azurewebsites.net/ 
 
 ## 1- menuexplorerfuncapp
-contains of azure functions (serverless) to work with microsoft cognitive services.
+contains of azure functions (serverless) to work with microsoft cognitive services. To know more about cognitive services and try it check out  https://azure.microsoft.com/en-us/try/cognitive-services/
+
 
 Computer vision - OCR: detecting handwritten or printed text in an image and then converting them into machine-encoded text - more info https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/
 
@@ -33,6 +34,7 @@ you need to copy and update local.settings.json from documents folder to menuexp
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local
 
 More info: https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local
+
 
 ## 2- menuexplorerapp
 
