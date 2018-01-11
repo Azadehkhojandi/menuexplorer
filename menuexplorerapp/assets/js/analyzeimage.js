@@ -63,7 +63,7 @@ $(document).ready(function () {
                                     translate(lines[index], "line", function (originaltext, result, line) {
                                         if (result && result.translatedtext) {
                                             line.translatedtext = result.translatedtext;
-                                            $(".lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext' data-language='" + data.language + "'>" + originaltext + "</span> <b>en:</b>  <span class='originaltext' data-language='en'> "+ result.translatedtext + "</span> </p>");
+                                            $(".lines").append("<p>" + "<b>" + data.language + ":</b> <span class='originaltext' data-language='" + data.language + "'>" + originaltext + "</span> <b>en:</b>  <span class='originaltext' data-language='en'> " + result.translatedtext + "</span> </p>");
                                         }
                                     });
                                 }
@@ -117,7 +117,8 @@ $(document).ready(function () {
 
     $('.lines').on('click', '.originaltext', function (e) {
 
-        var q = encodeURIComponent(this.textContent.replace(/ +(?= )/g, ' ').replace(/\s+/g, "+"));
+        
+        var q = encodeURIComponent(this.textContent.trim().replace(/ +(?= )/g, ' ').replace(/\s+/g, "+"));
         var bingserach = 'https://www.bing.com/images/search?q={q}&FORM=HDRSC2'.replace('{q}', q);
         var googleserach = 'https://www.google.com.au/search?q={q}&tbm=isch'.replace('{q}', q);
 

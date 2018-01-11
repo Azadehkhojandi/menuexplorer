@@ -23,7 +23,7 @@ $(document).ready(function () {
 
 
     function readURL(input) {
-        let max_width = $(".form-group").width()
+        let max_width = $(".form-group").width();
 
         if (input.files && input.files[0]) {
             var reader = new FileReader();
