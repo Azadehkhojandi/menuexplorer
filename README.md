@@ -14,11 +14,11 @@ You can easily run and test the application locally. The application is also hos
 Contains azure functions (serverless) to work with Microsoft cognitive services. To know more about cognitive services and try it check out  https://azure.microsoft.com/en-us/try/cognitive-services/
 
 
-**Computer vision - OCR:** detecting handwritten or printed text in an image and then converting them into machine-encoded text - more info https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/
+- **Computer vision - OCR:** detecting handwritten or printed text in an image and then converting them into machine-encoded text. https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/
 
-**Translate:** translate text from any language to english - more info  https://docs.microsofttranslator.com/text-translate.html
+- **Translate:** translate text from any language to english. https://docs.microsofttranslator.com/text-translate.html
 
-**BingImageSearch:** searching bing indexed images and returing result - more info 
+- **BingImageSearch:** searching bing indexed images and returing result. 
 https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference
 
 ### Running locally
@@ -27,11 +27,9 @@ https://blogs.msdn.microsoft.com/webdev/2017/05/10/azure-function-tools-for-visu
 https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio
 also, please make sure you get subscription keys for each of the services. All of them have free tier so there won't be any cost involved.
 
-### local Settings and CORS with Azure functions 
+### Local Settings and CORS with Azure functions 
 
 you need to copy and update local.settings.json from documents folder to menuexplorerfuncapp folder and make sure "Copy to output directly" set to "copy if newer"
-
-https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local
 
 More info: https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local
 
@@ -53,4 +51,3 @@ As the solution has 2 parts to it, before setting the deployment options first w
 more info:
 https://www.hanselman.com/blog/DeployingTWOWebsitesToWindowsAzureFromOneGitRepository.aspx
 https://github.com/projectkudu/kudu/wiki/Customizing-deployments
-
