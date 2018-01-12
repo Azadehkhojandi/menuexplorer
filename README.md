@@ -3,7 +3,7 @@ Menu Explorer is an application to allow you to take a photo of a local menu and
 
 When you travel aboard, sometimes you like to be adventurous and check out the local restaurants. However if you are in a country that speaks a different language it can be difficult to order. Menu explorer not only translates the menu in English for you, but can also display pictures of the dish based on the original language. This helps with many dishes where literal translations are don't work (e.g. a "Baked Alaska"). 
 
-You can easily run and test the application locally. The application is also hosted on Azure https://themenuexplorer.azurewebsites.net/ 
+The application is hosted on Azure for you to try https://themenuexplorer.azurewebsites.net/ 
 
 ![example of displaying translated menu with photos of the dish](/documents/MenuExplorer1.PNG)
 
