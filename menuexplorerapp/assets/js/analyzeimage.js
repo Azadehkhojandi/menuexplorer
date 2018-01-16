@@ -25,6 +25,7 @@ function loadconfig(callback) {
 $(document).ready(function () {
 
     $("#canvas").on("imageuploaded", function (event) {
+        $(".loader").removeClass("hidden");
         var imageurl = $("#canvas")[0].toDataURL('image/png');
         fetch(imageurl)
             .then(res => res.blob())
@@ -38,6 +39,7 @@ $(document).ready(function () {
                         return;
                     }
                     ocr(blob, function (data) {
+                        $(".loader").addClass("hidden");
                         if (data && data.result) {
                             $('.menu-in-plain-text').removeClass('hidden');
                             data = data.result;
