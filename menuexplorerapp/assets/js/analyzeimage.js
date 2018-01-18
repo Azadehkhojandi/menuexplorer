@@ -85,7 +85,7 @@ $(document).ready(function () {
         var rect = collides(e.offsetX, e.offsetY);
         if (rect) {
             $(".selected-line").removeClass('hidden');
-            $(".selected-line-result").html('<h2>' + rect.line + (rect.translatedtext !== (null || undefined) ? ' <b>en:</b> ' + rect.translatedtext : '') + '</h2>');
+            $(".selected-line-result").html("<h2><span class='originaltext'>" + rect.line +"</span>"+ (rect.translatedtext !== (null || undefined) ? " <b>en:</b> <span class='originaltext'>" + rect.translatedtext+"</span>" : '') + '</h2>');
             $(".selected-line-photos").html('');
             imagesearch(rect.line, function (data) {
                 if (data && data.result && data.result.value && data.result.value.length > 0) {
@@ -118,28 +118,34 @@ $(document).ready(function () {
     }
 
     $('.lines').on('click', '.originaltext', function (e) {
-
-        
-        var q = encodeURIComponent(this.textContent.trim().replace(/ +(?= )/g, ' ').replace(/\s+/g, "+"));
-        var bingserach = 'https://www.bing.com/images/search?q={q}&FORM=HDRSC2'.replace('{q}', q);
-        var googleserach = 'https://www.google.com.au/search?q={q}&tbm=isch'.replace('{q}', q);
-
-        var wingoogle = window.open(googleserach, '_blank');
-        var winbing = window.open(bingserach, '_blank');
-
-
-
-        if (winbing) {
-            winbing.focus();
-        } else if (!wingoogle || !winbing) {
-            //Browser has blocked it
-            alert('Please allow popups for this website');
-        }
-
+        openSearch(this.textContent);
+    });
+    $('.selected-line-result').on('click', '.originaltext', function (e) {
+        openSearch(this.textContent);
     });
 
-});
+    function openSearch(textContent)
+    {
+    var q = encodeURIComponent(textContent.trim().replace(/ +(?= )/g, ' ').replace(/\s+/g, "+"));
+    var bingserach = 'https://www.bing.com/images/search?q={q}&FORM=HDRSC2'.replace('{q}', q);
+    var googleserach = 'https://www.google.com.au/search?q={q}&tbm=isch'.replace('{q}', q);
 
+    var wingoogle = window.open(googleserach, '_blank');
+    var winbing = window.open(bingserach, '_blank');
+
+
+
+    if (winbing) {
+        winbing.focus();
+    } else if (!wingoogle || !winbing) {
+        //Browser has blocked it
+        alert('Please allow popups for this website');
+    }
+
+    }
+
+
+});
 function joinObj(a, attr) {
     var out = [];
     for (var i = 0; i < a.length; i++) {
